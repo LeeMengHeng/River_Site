@@ -1,7 +1,8 @@
 var svg = d3.select("svg");
-var projection = d3.geoMercator().scale(80)
+var projection = d3.geoMercator().scale(80);
 var path = d3.geoPath(projection);
-
+var tool_tip = d3.select(".tooltip");
+tool_tip.style("position", "absolute");
 d3.queue()
 .defer(d3.json, "https://unpkg.com/world-atlas@1/world/110m.json")
 .defer(d3.csv, "River_Info.csv", function(d){
@@ -14,7 +15,6 @@ d3.queue()
     var num=d[g];
     r[g]= [num.slice(0,num.length-1),num[num.length-1]];
   });
-  console.log(r)
   return r;
 })
 .await(function(err, world, rivers){
@@ -36,6 +36,13 @@ d3.queue()
     .attr("cy",function(d){
       return d.coord[1]
     })
-      .attr("r", 3)
-      .style("fill", "pink");
+    .attr("r", 3)
+    .style("fill", "pink")
+    .on("mouseover", function(river_info){
+      tool_tip
+        .style("left", river_info.coord[0] + "px")
+        .style("top", river_info.coord[1] + "px")
+        .html(river_info.name+ ","+ river_info.country)
+    });
+
 })
