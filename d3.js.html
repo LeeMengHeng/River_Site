@@ -3,6 +3,21 @@
 <head>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js"></script>
   <script src ="https://unpkg.com/topojson-client@3"></script>
+  <style>
+  @font-face {
+    font-family: Simplifica;
+    src: url(static/simplifica.ttf);
+  }
+    .tooltip {
+      padding: 10px 20px;
+      border-radius: 5px;
+      background: #4aadd1;
+      color: white;
+      font-family: simplifica;
+      letter-spacing: 3px;
+      font-weight: bold;
+    }
+  </style>
 
   <title>World Map</title>
 </head>
@@ -11,7 +26,7 @@
 
   </svg>
   <div class="tooltip">
-    
+
   </div>
   <script src="main.js"></script>
 </body>

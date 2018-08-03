@@ -3,6 +3,7 @@ var projection = d3.geoMercator().scale(80);
 var path = d3.geoPath(projection);
 var tool_tip = d3.select(".tooltip");
 tool_tip.style("position", "absolute");
+
 d3.queue()
 .defer(d3.json, "https://unpkg.com/world-atlas@1/world/110m.json")
 .defer(d3.csv, "River_Info.csv", function(d){
@@ -40,9 +41,15 @@ d3.queue()
     .style("fill", "pink")
     .on("mouseover", function(river_info){
       tool_tip
-        .style("left", river_info.coord[0] + "px")
-        .style("top", river_info.coord[1] + "px")
-        .html(river_info.name+ ","+ river_info.country)
-    });
+        .style("left", (river_info.coord[0] + 20) + "px")
+        .style("top", (river_info.coord[1] - 10) + "px")
+        .style("display","block")
+        .html(river_info.name+ "," + " " + river_info.country)
+    })
+
+    .on("mouseout", function(river_info){
+      tool_tip
+        .style("display","none")
+    })
 
 })
