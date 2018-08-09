@@ -12,9 +12,19 @@ d3.queue()
     country:d.Country,
     coord: projection([d.Longitude, d.Latitude]),
   };
+
+  //Separating numbers in the table, for example: 3.5 x 104 --> ["3.5 x 10", "4"]
   ["LowerMassInputEstimate","MidpointMassInputEstimate","UpperMassInputEstimate","TotalCatchmentSurfaceArea","YearlyAverageDischarge"].forEach(function(g){
     var num=d[g];
-    r[g]= [num.slice(0,num.length-1),num[num.length-1]];
+    d[g]= [num.slice(0,num.length-1),num[num.length-1]];
+  });
+
+  Object.assign(r, {
+    LowerM: d.LowerMassInputEstimate,
+    Midpoint: d.MidpointMassInputEstimate,
+    UpperM: d.UpperMassInputEstimate,
+    TotalSurface: d.TotalCatchmentSurfaceArea,
+    Yearly: d.YearlyAverageDischarge
   });
   return r;
 })
@@ -40,11 +50,26 @@ d3.queue()
     .attr("r", 3)
     .style("fill", "pink")
     .on("mouseover", function(river_info){
+      var genEntry = (term, key) => `
+        <dt>${term}:</dt>
+        <dd>${river_info[key][0]} <sup>${river_info[key][1]}</sup></dd>`;
+
       tool_tip
         .style("left", (river_info.coord[0] + 20) + "px")
         .style("top", (river_info.coord[1] - 10) + "px")
         .style("display","block")
         .html(river_info.name+ "," + " " + river_info.country)
+        .html(`<dl>
+          <dt>Name:</dt>
+          <dd>${river_info.name}</dd>
+          <dt>Country:</dt>
+          <dd>${river_info.country}</dd>
+        ${genEntry("Lower Mass Input Estimate", "LowerM")}
+        ${genEntry("Midpoint Mass Input Estimate", "Midpoint")}
+        ${genEntry("Upper Mass Input Estimate", "UpperM")}
+        ${genEntry("Total Catchment Surface Area", "TotalSurface")}
+        ${genEntry("Yearly Average Discharge", "Yearly")}
+          </dl>`)
     })
 
     .on("mouseout", function(river_info){
