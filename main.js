@@ -49,7 +49,10 @@ d3.queue()
     })
     .attr("r", 3)
     .style("fill", "pink")
+    // Mouse over event handler
     .on("mouseover", function(river_info){
+      // genEntry function take term and key from tool_tip html generation
+      // <sup></sup> makes number into power 
       var genEntry = (term, key) => `
         <dt>${term}:</dt>
         <dd>${river_info[key][0]} <sup>${river_info[key][1]}</sup></dd>`;
@@ -58,17 +61,17 @@ d3.queue()
         .style("left", (river_info.coord[0] + 20) + "px")
         .style("top", (river_info.coord[1] - 10) + "px")
         .style("display","block")
-        .html(river_info.name+ "," + " " + river_info.country)
+        // dl = definition list, dt = definition title, dd = definition description
         .html(`<dl>
           <dt>Name:</dt>
           <dd>${river_info.name}</dd>
           <dt>Country:</dt>
           <dd>${river_info.country}</dd>
-        ${genEntry("Lower Mass Input Estimate", "LowerM")}
-        ${genEntry("Midpoint Mass Input Estimate", "Midpoint")}
-        ${genEntry("Upper Mass Input Estimate", "UpperM")}
-        ${genEntry("Total Catchment Surface Area", "TotalSurface")}
-        ${genEntry("Yearly Average Discharge", "Yearly")}
+          ${genEntry("Lower Mass Input Estimate", "LowerM")}
+          ${genEntry("Midpoint Mass Input Estimate", "Midpoint")}
+          ${genEntry("Upper Mass Input Estimate", "UpperM")}
+          ${genEntry("Total Catchment Surface Area", "TotalSurface")}
+          ${genEntry("Yearly Average Discharge", "Yearly")}
           </dl>`)
     })
 
