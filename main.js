@@ -1,15 +1,12 @@
 var svg = d3.select("svg");
 var projection = d3.geoMercator().scale(80);
-var path = d3.geoPath(projection);
-var tool_tip = d3.select(".tooltip");
+var tool_tip = d3.select(".river_tool_tip");
 tool_tip.style("position", "absolute");
 
 d3.queue()
 .defer(d3.json, "https://unpkg.com/world-atlas@1/world/110m.json")
 .defer(d3.csv, "River_Info.csv", function(d){
   var r = {
-    name:d.Catchment,
-    country:d.Country,
     coord: projection([d.Longitude, d.Latitude]),
   };
 
@@ -20,17 +17,20 @@ d3.queue()
   });
 
   Object.assign(r, {
+    name:d.Catchment,
+    country:d.Country,
     LowerM: d.LowerMassInputEstimate,
     Midpoint: d.MidpointMassInputEstimate,
     UpperM: d.UpperMassInputEstimate,
     TotalSurface: d.TotalCatchmentSurfaceArea,
-    Yearly: d.YearlyAverageDischarge
+    Yearly: d.YearlyAverageDischarge,
   });
   return r;
 })
 .await(function(err, world, rivers){
   if (err) throw err;
   var feature = topojson.feature(world, world.objects.countries);
+  var path = d3.geoPath(projection);
   svg.append("path")
     .datum(feature)
     .attr("d",path)
@@ -41,12 +41,8 @@ d3.queue()
     .data(rivers)
     .enter()
     .append("circle")
-    .attr("cx",function(d){
-      return d.coord[0]
-    })
-    .attr("cy",function(d){
-      return d.coord[1]
-    })
+    .attr("cx", d => d.coord[0])
+    .attr("cy", d => d.coord[1])
     .attr("r", 3)
     .style("fill", "pink")
     // Mouse over event handler
