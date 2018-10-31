@@ -1,5 +1,5 @@
 var svg = d3.select("svg");
-var projection = d3.geoMercator().scale(80);
+var projection = d3.geoMercator().scale(130).translate([780,390]);
 var tool_tip = d3.select(".river_tool_tip");
 tool_tip.style("position", "absolute");
 
@@ -35,7 +35,7 @@ d3.queue()
     .datum(feature)
     .attr("d",path)
     .style("fill","none")
-    .style("stroke","lightblue");
+    .style("stroke","white");
 
   svg.selectAll("circle")
     .data(rivers)
@@ -44,11 +44,11 @@ d3.queue()
     .attr("cx", d => d.coord[0])
     .attr("cy", d => d.coord[1])
     .attr("r", 3)
-    .style("fill", "pink")
+    .style("fill", "rosybrown")
     // Mouse over event handler
     .on("mouseover", function(river_info){
       // genEntry function take term and key from tool_tip html generation
-      // <sup></sup> makes number into power 
+      // <sup></sup> makes number into power
       var genEntry = (term, key) => `
         <dt>${term}:</dt>
         <dd>${river_info[key][0]} <sup>${river_info[key][1]}</sup></dd>`;
