@@ -55,7 +55,7 @@ d3.queue()
 
       tool_tip
         .style("left", (river_info.coord[0] + 20) + "px")
-        .style("top", (river_info.coord[1] - 10) + "px")
+        .style("top", (river_info.coord[1] - 50) + "px")
         .style("display","block")
         // dl = definition list, dt = definition title, dd = definition description
         .html(`<dl>
